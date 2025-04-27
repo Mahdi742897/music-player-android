@@ -1,5 +1,7 @@
 package com.example.musicplayer;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -76,11 +78,18 @@ public class MainActivity extends AppCompatActivity {
             if (isNetworkAvailable()) {
                 togglePlayPause();
             } else {
-                showError("No internet connection");
+                showAlertDialog();
             }
         });
 
+
+
+
         stopButton.setOnClickListener(v -> stopPlayer());
+
+
+
+
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -94,6 +103,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         handler.postDelayed(updateSeekBar, 1000);
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.baseline_error_outline_24);
+        builder.setTitle("Internet Connectioin Faild !");
+        builder.setMessage("Please Check Your Intenet Then Try Again");
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private boolean isNetworkAvailable() {
