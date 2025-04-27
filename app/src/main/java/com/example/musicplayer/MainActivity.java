@@ -73,7 +73,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         playButton.setOnClickListener(v -> {
+            if (isNetworkAvailable()) {
                 togglePlayPause();
+            } else {
+                showError("No internet connection");
+            }
         });
 
         stopButton.setOnClickListener(v -> stopPlayer());
@@ -92,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(updateSeekBar, 1000);
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
     private void togglePlayPause() {
